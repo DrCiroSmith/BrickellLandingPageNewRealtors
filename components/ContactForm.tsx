@@ -13,6 +13,23 @@ interface LanguageSkill {
   proficiency: string;
 }
 
+// Security: Input sanitization to prevent XSS attacks
+const sanitizeInput = (input: string): string => {
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .trim();
+};
+
+// Security: Validate email format
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 254;
+};
+
 const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -72,17 +89,21 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   };
 
   // Send email notification using EmailJS
-  const sendEmailNotification = async (resumeUrl: string, languagesStr: string) => {
+  const sendEmailNotification = async (
+    sanitizedData: typeof formData, 
+    resumeUrl: string, 
+    languagesStr: string
+  ) => {
     try {
       // Generate HTML email content
       const htmlContent = generateEmailHTML({
-        name: formData.name,
-        age: formData.age,
-        email: formData.email,
-        phone: formData.phone,
-        license: formData.license,
-        experience: formData.experience,
-        appointmentDate: formData.appointmentDate,
+        name: sanitizedData.name,
+        age: sanitizedData.age,
+        email: sanitizedData.email,
+        phone: sanitizedData.phone,
+        license: sanitizedData.license,
+        experience: sanitizedData.experience,
+        appointmentDate: sanitizedData.appointmentDate,
         languages: languagesStr,
         resumeUrl: resumeUrl
       });
@@ -92,19 +113,19 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       // to support various EmailJS template configurations.
       const templateParams = {
         to_email: EMAILJS_CONFIG.TO_EMAIL,
-        from_name: formData.name,
-        from_email: formData.email,
-        subject: `Nueva Solicitud de Agente: ${formData.name}`,
+        from_name: sanitizedData.name,
+        from_email: sanitizedData.email,
+        subject: `Nueva Solicitud de Agente: ${sanitizedData.name}`,
         html_content: htmlContent,
         // Individual fields for flexible template design
-        applicant_name: formData.name,
-        applicant_age: formData.age,
-        applicant_email: formData.email,
-        applicant_phone: formData.phone,
-        applicant_license: formData.license,
-        applicant_experience: formData.experience,
+        applicant_name: sanitizedData.name,
+        applicant_age: sanitizedData.age,
+        applicant_email: sanitizedData.email,
+        applicant_phone: sanitizedData.phone,
+        applicant_license: sanitizedData.license,
+        applicant_experience: sanitizedData.experience,
         applicant_languages: languagesStr,
-        applicant_appointment: formData.appointmentDate,
+        applicant_appointment: sanitizedData.appointmentDate,
         resume_url: resumeUrl || 'No se adjuntó archivo'
       };
 
@@ -126,6 +147,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Security: Validate email format
+    if (!isValidEmail(formData.email)) {
+      alert("Por favor, introduce un email válido.");
+      return;
+    }
+    
     if (!validatePhone(formData.phone)) {
       alert("Por favor, introduce un número de teléfono válido.");
       return;
@@ -133,7 +160,21 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
     setIsSubmitting(true);
 
-    const languagesStr = languages.map(l => `${l.language} (${l.proficiency})`).filter(l => l.length > 3).join(', ');
+    // Security: Sanitize all user inputs before processing
+    const sanitizedData = {
+      name: sanitizeInput(formData.name),
+      age: sanitizeInput(formData.age),
+      email: sanitizeInput(formData.email),
+      phone: sanitizeInput(formData.phone),
+      license: sanitizeInput(formData.license),
+      experience: sanitizeInput(formData.experience),
+      appointmentDate: sanitizeInput(formData.appointmentDate)
+    };
+
+    const languagesStr = languages
+      .map(l => `${sanitizeInput(l.language)} (${sanitizeInput(l.proficiency)})`)
+      .filter(l => l.length > 3)
+      .join(', ');
 
     try {
       let resumeUrl = '';
@@ -142,8 +183,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       if (file) {
         try {
           const fileExt = file.name.split('.').pop();
-          // Sanitize filename
-          const fileName = `${Date.now()}_${formData.name.replace(/[^a-zA-Z0-9]/g, '_')}.${fileExt}`;
+          // Security: Sanitize filename - only allow alphanumeric and underscores
+          const sanitizedName = sanitizedData.name.replace(/[^a-zA-Z0-9]/g, '_');
+          const fileName = `${Date.now()}_${sanitizedName}.${fileExt}`;
           const filePath = `applicants/${fileName}`;
 
           const { error: uploadError } = await supabase.storage
@@ -165,18 +207,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         }
       }
 
-      // 2. Insert Data to Supabase
+      // 2. Insert Data to Supabase (using sanitized data)
       const { error: insertError } = await supabase
         .from('applicants')
         .insert([
           {
-            full_name: formData.name,
-            age: formData.age ? parseInt(formData.age) : null,
-            email: formData.email,
-            phone: formData.phone,
-            license_status: formData.license,
-            experience_years: formData.experience,
-            appointment_date: formData.appointmentDate,
+            full_name: sanitizedData.name,
+            age: sanitizedData.age ? parseInt(sanitizedData.age) : null,
+            email: sanitizedData.email,
+            phone: sanitizedData.phone,
+            license_status: sanitizedData.license,
+            experience_years: sanitizedData.experience,
+            appointment_date: sanitizedData.appointmentDate,
             resume_url: resumeUrl,
             languages: languagesStr,
             language_proficiency: 'See languages column',
@@ -189,21 +231,21 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       }
 
       // 3. Send email notification (always attempt, regardless of Supabase success)
-      const emailSent = await sendEmailNotification(resumeUrl, languagesStr);
+      const emailSent = await sendEmailNotification(sanitizedData, resumeUrl, languagesStr);
       
       if (!emailSent) {
-        // Fallback to mailto if EmailJS fails
-        const subject = `Nueva Solicitud de Agente: ${formData.name}`;
+        // Fallback to mailto if EmailJS fails (using sanitized data)
+        const subject = `Nueva Solicitud de Agente: ${sanitizedData.name}`;
         const body = `
 Nueva solicitud de reclutamiento:
 
-Nombre: ${formData.name}
-Edad: ${formData.age}
-Email: ${formData.email}
-Teléfono: ${formData.phone}
-Licencia: ${formData.license}
-Experiencia: ${formData.experience}
-Fecha Cita: ${formData.appointmentDate}
+Nombre: ${sanitizedData.name}
+Edad: ${sanitizedData.age}
+Email: ${sanitizedData.email}
+Teléfono: ${sanitizedData.phone}
+Licencia: ${sanitizedData.license}
+Experiencia: ${sanitizedData.experience}
+Fecha Cita: ${sanitizedData.appointmentDate}
 Idiomas: ${languagesStr}
 
 Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
@@ -217,16 +259,16 @@ Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
     } catch (error) {
       console.error('Form submission error:', error);
       
-      // Final fallback: Open mailto
-      const subject = `Nueva Solicitud: ${formData.name}`;
+      // Final fallback: Open mailto (using sanitized data)
+      const subject = `Nueva Solicitud: ${sanitizedData.name}`;
       const body = `
-Nombre: ${formData.name}
-Edad: ${formData.age}
-Email: ${formData.email}
-Teléfono: ${formData.phone}
-Licencia: ${formData.license}
-Experiencia: ${formData.experience}
-Fecha Cita: ${formData.appointmentDate}
+Nombre: ${sanitizedData.name}
+Edad: ${sanitizedData.age}
+Email: ${sanitizedData.email}
+Teléfono: ${sanitizedData.phone}
+Licencia: ${sanitizedData.license}
+Experiencia: ${sanitizedData.experience}
+Fecha Cita: ${sanitizedData.appointmentDate}
 Idiomas: ${languagesStr}
 
 (Nota: El envío automático falló. Por favor, complete el envío manualmente).
