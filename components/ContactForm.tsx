@@ -88,12 +88,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       });
 
       // Send email using EmailJS
+      // Note: Template should use these variables. Some may appear redundant 
+      // to support various EmailJS template configurations.
       const templateParams = {
         to_email: EMAILJS_CONFIG.TO_EMAIL,
         from_name: formData.name,
         from_email: formData.email,
         subject: `Nueva Solicitud de Agente: ${formData.name}`,
         html_content: htmlContent,
+        // Individual fields for flexible template design
         applicant_name: formData.name,
         applicant_age: formData.age,
         applicant_email: formData.email,

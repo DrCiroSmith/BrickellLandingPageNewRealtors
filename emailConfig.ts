@@ -1,24 +1,25 @@
 // EmailJS Configuration
-// To use EmailJS, you need to:
-// 1. Create an account at https://www.emailjs.com/
-// 2. Create an email service (e.g., Gmail, Outlook)
-// 3. Create an email template with the following variables:
-//    - to_email: recipient email
-//    - from_name: applicant name
-//    - from_email: applicant email
-//    - html_content: HTML formatted content with form data
-//    - resume_url: URL to the uploaded resume
-// 4. Replace the placeholder values below with your actual keys
+// =====================
+// To enable email functionality, follow these steps:
+// 1. Create a free account at https://www.emailjs.com/
+// 2. Add an email service (Gmail, Outlook, etc.)
+// 3. Create an email template with variables matching templateParams below
+// 4. Replace the configuration values below with your actual keys
+//
+// IMPORTANT: For production, consider using environment variables:
+// - VITE_EMAILJS_SERVICE_ID
+// - VITE_EMAILJS_TEMPLATE_ID  
+// - VITE_EMAILJS_PUBLIC_KEY
 
 export const EMAILJS_CONFIG = {
-  // Replace with your EmailJS service ID
-  SERVICE_ID: 'service_brickell',
+  // Replace with your EmailJS service ID (found in EmailJS dashboard)
+  SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_brickell',
   // Replace with your EmailJS template ID
-  TEMPLATE_ID: 'template_brickell_app',
-  // Replace with your EmailJS public key
-  PUBLIC_KEY: 'YOUR_EMAILJS_PUBLIC_KEY',
+  TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_brickell_app',
+  // Replace with your EmailJS public key (Account > API Keys)
+  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_EMAILJS_PUBLIC_KEY',
   // Recipient email for form submissions
-  TO_EMAIL: 'roisasha@gmail.com'
+  TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
 };
 
 // Generate HTML email template with Brickell Realty Group branding
