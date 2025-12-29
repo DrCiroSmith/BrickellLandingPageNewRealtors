@@ -5,9 +5,6 @@ interface ThankYouProps {
 }
 
 const ThankYou: React.FC<ThankYouProps> = ({ onBack }) => {
-  // Gold/Bronze color used in the design
-  const goldColor = "#A6864B";
-
   return (
     <div className="min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white bg-[#F5F5F5] dark:bg-[#121212] font-lato">
         {/* Header - Transparent with Logo exactly like Landing Page */}
