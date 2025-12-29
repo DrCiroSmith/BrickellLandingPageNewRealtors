@@ -1,6 +1,9 @@
 import React from 'react';
 
 const Hero: React.FC = () => {
+  // Get the base path for assets (handles GitHub Pages deployment)
+  const basePath = import.meta.env.BASE_URL || '/';
+  
   const scrollToApply = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const section = document.getElementById('apply');
@@ -14,7 +17,7 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 z-0">
         <div 
           className="h-full w-full bg-cover bg-center bg-no-repeat transform scale-105" 
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535498730771-e735b998cd64?q=80&w=2000&auto=format&fit=crop")' }}
+          style={{ backgroundImage: `url("${basePath}images/hero-bg.png")` }}
         >
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
