@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { supabase } from '../supabaseClient';
+import { EMAILJS_CONFIG, generateEmailHTML } from '../emailConfig';
 
 interface ContactFormProps {
   onSuccess: () => void;
@@ -69,6 +71,58 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 7;
   };
 
+  // Send email notification using EmailJS
+  const sendEmailNotification = async (resumeUrl: string, languagesStr: string) => {
+    try {
+      // Generate HTML email content
+      const htmlContent = generateEmailHTML({
+        name: formData.name,
+        age: formData.age,
+        email: formData.email,
+        phone: formData.phone,
+        license: formData.license,
+        experience: formData.experience,
+        appointmentDate: formData.appointmentDate,
+        languages: languagesStr,
+        resumeUrl: resumeUrl
+      });
+
+      // Send email using EmailJS
+      // Note: Template should use these variables. Some may appear redundant 
+      // to support various EmailJS template configurations.
+      const templateParams = {
+        to_email: EMAILJS_CONFIG.TO_EMAIL,
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: `Nueva Solicitud de Agente: ${formData.name}`,
+        html_content: htmlContent,
+        // Individual fields for flexible template design
+        applicant_name: formData.name,
+        applicant_age: formData.age,
+        applicant_email: formData.email,
+        applicant_phone: formData.phone,
+        applicant_license: formData.license,
+        applicant_experience: formData.experience,
+        applicant_languages: languagesStr,
+        applicant_appointment: formData.appointmentDate,
+        resume_url: resumeUrl || 'No se adjuntó archivo'
+      };
+
+      await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      );
+
+      console.log('Email sent successfully');
+      return true;
+    } catch (emailError) {
+      console.warn('EmailJS error:', emailError);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -111,7 +165,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         }
       }
 
-      // 2. Insert Data
+      // 2. Insert Data to Supabase
       const { error: insertError } = await supabase
         .from('applicants')
         .insert([
@@ -125,23 +179,46 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
             appointment_date: formData.appointmentDate,
             resume_url: resumeUrl,
             languages: languagesStr,
-            language_proficiency: 'See languages column', // Simplified for DB
+            language_proficiency: 'See languages column',
             created_at: new Date().toISOString()
           }
         ]);
 
       if (insertError) {
-        throw insertError;
+        console.warn('Supabase insert error:', insertError);
+      }
+
+      // 3. Send email notification (always attempt, regardless of Supabase success)
+      const emailSent = await sendEmailNotification(resumeUrl, languagesStr);
+      
+      if (!emailSent) {
+        // Fallback to mailto if EmailJS fails
+        const subject = `Nueva Solicitud de Agente: ${formData.name}`;
+        const body = `
+Nueva solicitud de reclutamiento:
+
+Nombre: ${formData.name}
+Edad: ${formData.age}
+Email: ${formData.email}
+Teléfono: ${formData.phone}
+Licencia: ${formData.license}
+Experiencia: ${formData.experience}
+Fecha Cita: ${formData.appointmentDate}
+Idiomas: ${languagesStr}
+
+Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
+        `.trim();
+        
+        window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       }
 
       onSuccess();
 
-    } catch (error: any) {
-      console.error('Supabase Error:', error);
+    } catch (error) {
+      console.error('Form submission error:', error);
       
-      // FALLBACK
+      // Final fallback: Open mailto
       const subject = `Nueva Solicitud: ${formData.name}`;
-      
       const body = `
 Nombre: ${formData.name}
 Edad: ${formData.age}
@@ -152,13 +229,10 @@ Experiencia: ${formData.experience}
 Fecha Cita: ${formData.appointmentDate}
 Idiomas: ${languagesStr}
 
-Enlace al CV (Si se cargó correctamente): 
-${file ? "(Ver adjunto o link generado previamente)" : "No se adjuntó archivo"}
-
-(Nota: El guardado automático falló. Por favor, asegúrese de que el PDF esté adjunto o accesible).
-      `;
+(Nota: El envío automático falló. Por favor, complete el envío manualmente).
+      `.trim();
       
-      window.open(`mailto:roisasha@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+      window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       
       onSuccess();
     } finally {
@@ -311,7 +385,7 @@ ${file ? "(Ver adjunto o link generado previamente)" : "No se adjuntó archivo"}
                   Idiomas
                 </label>
                 <div className="space-y-3">
-                  {languages.map((lang, index) => (
+                  {languages.map((lang) => (
                     <div key={lang.id} className="flex gap-4 items-end animate-in fade-in slide-in-from-top-1">
                       <div className="group flex-grow">
                         <input 
