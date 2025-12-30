@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Brickell Realty Group - Recruitment</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#d4af37",
+                        "primary-hover": "#b5952f",
+                        "secondary": "#0f172a",
+                        "accent-red": "#ef4444",
+                        "background-light": "#ffffff",
+                        "background-dark": "#111111",
+                        "surface-dark": "#1a1a1a",
+                        "surface-darker": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                        "lato": ["Lato", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "2px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .text-gold-gradient {
+            background: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: shine 5s linear infinite;
+        }
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeIn 1.2s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-gray-200 overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+    <div class="relative min-h-screen flex flex-col">
+        
+        <!-- ==================== HEADER SECTION ==================== -->
+        <header class="sticky top-0 z-50 w-full border-b border-white/10 bg-background-dark/95 backdrop-blur-md">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-24 items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img 
+                            alt="Brickell Realty Group Logo" 
+                            class="h-12 w-auto filter-none md:h-14 object-contain" 
+                            src="https://idxboost-single-property.s3.amazonaws.com/ad6f19fee807c6048e328d33bf4cd2e5/58726008becf56de4a8cfb855869cbac.png"
+                        />
+                    </div>
+                    <div>
+                        <a 
+                            class="hidden sm:flex items-center justify-center rounded-none border border-primary bg-transparent px-8 py-3 text-xs font-bold uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-black" 
+                            href="#apply"
+                        >
+                            Solicitar Cita
+                        </a>
+                        <button class="md:hidden text-white p-2">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="relative flex min-h-[800px] flex-col justify-center overflow-hidden py-20">
+            <div class="absolute inset-0 z-0">
+                <div 
+                    class="h-full w-full bg-cover bg-center bg-no-repeat transform scale-105" 
+                    data-alt="Luxurious Miami skyline with modern high-rise buildings at dusk" 
+                    style='background-image: url("https://raw.githubusercontent.com/DrCiroSmith/BrickellLandingPageNewRealtors/main/public/images/hero-bg.png");'
+                >
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+            </div>
+            <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+                <div class="max-w-3xl">
+                    <span class="mb-6 inline-block border-l-2 border-primary pl-4 text-sm font-semibold uppercase tracking-[0.2em] text-gray-200">
+                        Exclusivo para Agentes de Élite
+                    </span>
+                    <h1 class="text-5xl font-medium leading-tight text-white sm:text-7xl lg:text-8xl">
+                        Eleva Tu <br/>
+                        <span class="text-gold-gradient italic pr-2">Carrera</span>
+                    </h1>
+                    <p class="mt-8 max-w-xl text-lg font-light leading-relaxed text-gray-300 sm:text-xl border-l border-white/20 pl-6 ml-1">
+                        Únete a Brickell Realty Group. Accede a las propiedades más exclusivas de Miami y herramientas diseñadas para el éxito.
+                    </p>
+                    <div class="mt-12 flex flex-col sm:flex-row gap-6">
+                        <a 
+                            class="group flex h-14 min-w-[200px] items-center justify-center bg-primary px-8 text-sm font-bold uppercase tracking-widest text-black transition-all hover:bg-white" 
+                            href="#apply"
+                        >
+                            Solicitar Cita
+                            <span class="material-symbols-outlined ml-2 transition-transform group-hover:translate-x-1 text-lg">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BENEFITS SECTION ==================== -->
+        <section class="relative bg-background-dark py-32" id="benefits">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mb-20 grid gap-12 lg:grid-cols-2 lg:items-end">
+                    <div>
+                        <h2 class="text-4xl text-white sm:text-5xl lg:text-6xl font-normal">
+                            Excelencia en <span class="text-primary italic">Cada Detalle</span>
+                        </h2>
+                    </div>
+                    <div class="lg:border-l lg:border-white/10 lg:pl-12">
+                        <p class="text-lg text-gray-400 font-light leading-relaxed">
+                            Diseñamos un ecosistema donde la ambición se encuentra con la oportunidad. Nuestras herramientas y soporte están calibrados para agentes que no aceptan menos que lo extraordinario.
+                        </p>
+                    </div>
+                </div>
+                <div class="grid gap-px bg-white/10 sm:grid-cols-3">
+                    <!-- Benefit Card 1: Tecnología Superior -->
+                    <div class="group relative bg-surface-darker p-10 hover:bg-surface-dark transition-colors duration-500">
+                        <div class="mb-8 text-primary">
+                            <span class="material-symbols-outlined !text-5xl font-light">token</span>
+                        </div>
+                        <h3 class="mb-4 text-2xl text-white font-medium">Tecnología Superior</h3>
+                        <p class="text-sm leading-relaxed text-gray-400 font-light">
+                            Plataformas CRM propietarias y análisis de mercado en tiempo real para mantenerte siempre adelante de la competencia.
+                        </p>
+                    </div>
+                    <!-- Benefit Card 2: Soporte Integral -->
+                    <div class="group relative bg-surface-darker p-10 hover:bg-surface-dark transition-colors duration-500">
+                        <div class="mb-8 text-primary">
+                            <span class="material-symbols-outlined !text-5xl font-light">architecture</span>
+                        </div>
+                        <h3 class="mb-4 text-2xl text-white font-medium">Soporte Integral</h3>
+                        <p class="text-sm leading-relaxed text-gray-400 font-light">
+                            Un equipo dedicado de coordinadores de transacciones y soporte legal para asegurar cierres impecables.
+                        </p>
+                    </div>
+                    <!-- Benefit Card 3: Mentoria Elite -->
+                    <div class="group relative bg-surface-darker p-10 hover:bg-surface-dark transition-colors duration-500">
+                        <div class="mb-8 text-primary">
+                            <span class="material-symbols-outlined !text-5xl font-light">school</span>
+                        </div>
+                        <h3 class="mb-4 text-2xl text-white font-medium">Mentoria Elite</h3>
+                        <p class="text-sm leading-relaxed text-gray-400 font-light">
+                            Programas de coaching ejecutivo con los líderes más influyentes del sector inmobiliario de Miami.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT FORM / APPLICATION SECTION ==================== -->
+        <section class="relative bg-surface-darker py-24" id="apply">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
+                    <!-- Left Column: Info -->
+                    <div class="flex flex-col justify-center">
+                        <span class="text-primary font-bold tracking-widest uppercase text-xs mb-4">Únete al equipo</span>
+                        <h2 class="text-4xl text-white sm:text-5xl lg:text-6xl mb-8 font-normal leading-tight">
+                            Define tu <br/><span class="italic text-gray-500">Legado</span>
+                        </h2>
+                        <p class="text-lg text-gray-400 font-light mb-12">
+                            Estamos buscando agentes con visión y determinación. Completa el formulario para una consulta privada sobre tu futuro en Brickell Realty Group.
+                        </p>
+                        <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
+                            <div>
+                                <h4 class="text-3xl text-white font-serif mb-2">95%</h4>
+                                <p class="text-xs uppercase tracking-widest text-gray-500">Retención de Agentes</p>
+                            </div>
+                            <div>
+                                <h4 class="text-3xl text-white font-serif mb-2">$2B+</h4>
+                                <p class="text-xs uppercase tracking-widest text-gray-500">Volumen de Ventas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Form -->
+                    <div class="bg-background-dark p-8 md:p-12 border border-white/5 shadow-2xl relative">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-bl-full"></div>
+                        <h3 class="mb-8 text-2xl text-white font-serif">Solicitud de Cita</h3>
+                        <form class="space-y-6">
+                            <!-- Name and Age Row -->
+                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-4">
+                                <div class="group sm:col-span-3">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="name">Nombre completo</label>
+                                    <input 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                                        id="name" 
+                                        name="name" 
+                                        placeholder="Tu nombre" 
+                                        type="text"
+                                        required
+                                    />
+                                </div>
+                                <div class="group sm:col-span-1">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="age">Edad</label>
+                                    <input 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                                        id="age" 
+                                        name="age" 
+                                        placeholder="25" 
+                                        type="number"
+                                        min="18"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            
+                            <!-- Email and Phone Row -->
+                            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                                <div class="group">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="email">Email</label>
+                                    <input 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                                        id="email" 
+                                        name="email" 
+                                        placeholder="email@ejemplo.com" 
+                                        type="email"
+                                        required
+                                    />
+                                </div>
+                                <div class="group">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="phone">Teléfono</label>
+                                    <input 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                                        id="phone" 
+                                        name="phone" 
+                                        placeholder="+1 (555) 000-0000" 
+                                        type="tel"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            
+                            <!-- License and Experience Row -->
+                            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                                <div class="group">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="license">Licencia de Realtor</label>
+                                    <select 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer" 
+                                        id="license" 
+                                        name="license"
+                                        required
+                                    >
+                                        <option class="bg-surface-darker text-gray-400" value="">Seleccionar...</option>
+                                        <option class="bg-surface-darker" value="Activa">Sí, activa</option>
+                                        <option class="bg-surface-darker" value="En proceso">En proceso</option>
+                                        <option class="bg-surface-darker" value="No">No</option>
+                                    </select>
+                                </div>
+                                <div class="group">
+                                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="experience">Experiencia</label>
+                                    <select 
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer" 
+                                        id="experience" 
+                                        name="experience"
+                                        required
+                                    >
+                                        <option class="bg-surface-darker text-gray-400" value="">Seleccionar...</option>
+                                        <option class="bg-surface-darker" value="Menos de 1 año">Menos de 1 año</option>
+                                        <option class="bg-surface-darker" value="1-3 años">1-3 años</option>
+                                        <option class="bg-surface-darker" value="3-5 años">3-5 años</option>
+                                        <option class="bg-surface-darker" value="5+ años">5+ años</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Languages Section -->
+                            <div class="group">
+                                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Idiomas</label>
+                                <div class="space-y-3" id="languages-container">
+                                    <!-- Language Row 1 -->
+                                    <div class="flex gap-4 items-end">
+                                        <div class="group flex-grow">
+                                            <input 
+                                                class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                                                placeholder="Ej. Español" 
+                                                type="text"
+                                                name="language_1"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="group w-1/3">
+                                            <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-1">Nivel</label>
+                                            <select 
+                                                class="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer"
+                                                name="proficiency_1"
+                                                required
+                                            >
+                                                <option class="bg-surface-darker text-gray-400" value="">Seleccionar...</option>
+                                                <option class="bg-surface-darker" value="Básico">Básico</option>
+                                                <option class="bg-surface-darker" value="Intermedio">Intermedio</option>
+                                                <option class="bg-surface-darker" value="Avanzado">Avanzado</option>
+                                                <option class="bg-surface-darker" value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    class="mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-white transition-colors flex items-center gap-1"
+                                    onclick="addLanguage()"
+                                >
+                                    <span class="material-symbols-outlined text-lg">add</span> Agregar otro idioma
+                                </button>
+                            </div>
+
+                            <!-- Appointment Date Section -->
+                            <div class="group">
+                                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" for="appointmentDate">
+                                    Fecha de Cita (A partir del 6 de Enero)
+                                </label>
+                                <div class="relative">
+                                    <input 
+                                        style="color-scheme: dark;"
+                                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-0 sm:text-lg transition-colors cursor-pointer" 
+                                        id="appointmentDate" 
+                                        name="appointmentDate" 
+                                        type="date" 
+                                        min="2025-01-06"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            
+                            <!-- CV Upload Section -->
+                            <div class="group">
+                                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-3">CV / Resumen Profesional (Max 25MB)</label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label class="flex flex-col items-center justify-center w-full h-24 border border-gray-700 border-dashed cursor-pointer hover:bg-surface-dark hover:border-primary transition-all" for="dropzone-file">
+                                        <div class="flex flex-row items-center justify-center gap-3 pt-5 pb-6">
+                                            <span class="material-symbols-outlined text-gray-400">upload_file</span>
+                                            <p class="text-sm text-gray-400"><span class="font-semibold text-white">Click para subir</span> o arrastrar PDF</p>
+                                        </div>
+                                        <input class="hidden" id="dropzone-file" type="file" accept=".pdf"/>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="pt-6">
+                                <button class="w-full bg-white text-black py-4 px-8 text-sm font-bold uppercase tracking-widest hover:bg-primary transition-colors duration-300" type="submit">
+                                    Enviar Solicitud
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== GALLERY SECTION ==================== -->
+        <div class="w-full bg-background-dark pb-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                <!-- Gallery Image 1 -->
+                <div class="aspect-[4/5] relative group overflow-hidden">
+                    <div 
+                        class="h-full w-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
+                        style='background-image: url("https://raw.githubusercontent.com/DrCiroSmith/BrickellLandingPageNewRealtors/main/public/images/gallery-1.png");'
+                    ></div>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+                <!-- Gallery Image 2 -->
+                <div class="aspect-[4/5] relative group overflow-hidden">
+                    <div 
+                        class="h-full w-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
+                        style='background-image: url("https://raw.githubusercontent.com/DrCiroSmith/BrickellLandingPageNewRealtors/main/public/images/gallery-2.png");'
+                    ></div>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+                <!-- Gallery Image 3 -->
+                <div class="aspect-[4/5] relative group overflow-hidden">
+                    <div 
+                        class="h-full w-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
+                        style='background-image: url("https://raw.githubusercontent.com/DrCiroSmith/BrickellLandingPageNewRealtors/main/public/images/gallery-3.png");'
+                    ></div>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+                <!-- Gallery Image 4 -->
+                <div class="aspect-[4/5] relative group overflow-hidden">
+                    <div 
+                        class="h-full w-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
+                        style='background-image: url("https://raw.githubusercontent.com/DrCiroSmith/BrickellLandingPageNewRealtors/main/public/images/gallery-4.png");'
+                    ></div>
+                    <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== FOOTER SECTION ==================== -->
+        <footer class="bg-surface-darker py-12 border-t border-white/10">
+            <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6 lg:px-8">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-gray-600">apartment</span>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">© 2025 Brickell Realty Group.</p>
+                </div>
+                <div class="flex flex-wrap gap-8 justify-center">
+                    <a class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors" href="#">Privacidad</a>
+                    <a class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors" href="#">Términos</a>
+                    <a 
+                        href="https://www.instagram.com/brickell.realty.group/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors"
+                    >
+                        Instagram
+                    </a>
+                    <a 
+                        href="https://www.facebook.com/p/Brickell-Realty-Group-100063637617298/?locale=es_LA" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors"
+                    >
+                        Facebook
+                    </a>
+                    <a 
+                        href="https://www.linkedin.com/company/brickell-realty-group/" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors"
+                    >
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </footer>
+        
+    </div>
+
+    <!-- ==================== JAVASCRIPT FOR DYNAMIC FUNCTIONALITY ==================== -->
+    <script>
+        // Language counter for dynamic language fields
+        let languageCount = 1;
+        
+        function addLanguage() {
+            languageCount++;
+            const container = document.getElementById('languages-container');
+            const newLanguageRow = document.createElement('div');
+            newLanguageRow.className = 'flex gap-4 items-end';
+            newLanguageRow.id = 'language-row-' + languageCount;
+            newLanguageRow.innerHTML = `
+                <div class="group flex-grow">
+                    <input 
+                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors" 
+                        placeholder="Ej. Inglés" 
+                        type="text"
+                        name="language_${languageCount}"
+                    />
+                </div>
+                <div class="group w-1/3">
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-600 mb-1">Nivel</label>
+                    <select 
+                        class="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer"
+                        name="proficiency_${languageCount}"
+                    >
+                        <option class="bg-surface-darker text-gray-400" value="">Seleccionar...</option>
+                        <option class="bg-surface-darker" value="Básico">Básico</option>
+                        <option class="bg-surface-darker" value="Intermedio">Intermedio</option>
+                        <option class="bg-surface-darker" value="Avanzado">Avanzado</option>
+                        <option class="bg-surface-darker" value="Nativo">Nativo</option>
+                    </select>
+                </div>
+                <div class="pb-3">
+                    <button 
+                        type="button" 
+                        onclick="removeLanguage(${languageCount})"
+                        class="text-gray-500 hover:text-red-500 transition-colors"
+                        title="Eliminar idioma"
+                    >
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newLanguageRow);
+        }
+        
+        function removeLanguage(id) {
+            const row = document.getElementById('language-row-' + id);
+            if (row) {
+                row.remove();
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // File upload display with size validation (25MB max)
+        document.getElementById('dropzone-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // 25MB limit check
+                if (file.size > 25 * 1024 * 1024) {
+                    alert('El archivo excede el límite de 25MB.');
+                    e.target.value = '';
+                    return;
+                }
+                const label = this.closest('label').querySelector('p');
+                label.innerHTML = '<span class="text-primary font-semibold">' + file.name + '</span>';
+            }
+        });
+    </script>
+</body>
+</html>
