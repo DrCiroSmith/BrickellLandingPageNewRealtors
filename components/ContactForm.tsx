@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { EMAILJS_CONFIG } from '../emailConfig';
-
-interface ContactFormProps {
-  onSuccess: () => void;
-}
 
 interface LanguageSkill {
   id: number;
@@ -29,7 +26,8 @@ const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email) && email.length <= 254;
 };
 
-const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
+const ContactForm: React.FC = () => {
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -211,7 +209,8 @@ Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
         window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       }
 
-      onSuccess();
+      navigate('/thank-you');
+      window.scrollTo(0, 0);
 
     } catch (error) {
       console.error('Form submission error:', error);
@@ -233,7 +232,8 @@ Mensaje: ${sanitizedData.message}
 
       window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
 
-      onSuccess();
+      navigate('/thank-you');
+      window.scrollTo(0, 0);
     } finally {
       setIsSubmitting(false);
     }

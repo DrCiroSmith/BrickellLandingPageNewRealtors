@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Benefits from './components/Benefits';
@@ -7,31 +8,31 @@ import Gallery from './components/Gallery';
 import Footer from './components/Footer';
 import ThankYou from './components/ThankYou';
 
-const App: React.FC = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+const Home: React.FC = () => (
+  <div className="relative min-h-screen flex flex-col">
+    <Header />
+    <main className="flex-grow flex flex-col">
+      <Hero />
+      <Benefits />
+      <ContactForm />
+      <Gallery />
+    </main>
+    <Footer />
+  </div>
+);
 
+const ThankYouPage: React.FC = () => (
+  <ThankYou />
+);
+
+const App: React.FC = () => {
   return (
-    <div className="relative min-h-screen flex flex-col">
-      {/* Hide the main header if we are on the Thank You page to avoid double logos */}
-      {!isSubmitted && <Header />}
-      
-      <main className="flex-grow flex flex-col">
-        {isSubmitted ? (
-          <ThankYou onBack={() => setIsSubmitted(false)} />
-        ) : (
-          <>
-            <Hero />
-            <Benefits />
-            <ContactForm onSuccess={() => {
-              setIsSubmitted(true);
-              window.scrollTo(0, 0);
-            }} />
-            <Gallery />
-          </>
-        )}
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/thank-you" element={<ThankYouPage />} />
+      </Routes>
+    </Router>
   );
 };
 
