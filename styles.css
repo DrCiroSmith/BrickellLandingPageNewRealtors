@@ -65,11 +65,11 @@ h1, h2, h3 {
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Custom date picker icon color inversion for dark mode */
-::-webkit-calendar-picker-indicator {
+/* Custom date picker icon color inversion for dark mode only */
+.dark ::-webkit-calendar-picker-indicator {
   filter: invert(1);
   opacity: 0.5;
 }
-::-webkit-calendar-picker-indicator:hover {
+.dark ::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }

@@ -1,7 +1,8 @@
 import React from 'react';
+import { IconName } from '../types';
 
 interface IconProps {
-  name: string;
+  name: IconName | string;
   className?: string;
   style?: React.CSSProperties;
 }
