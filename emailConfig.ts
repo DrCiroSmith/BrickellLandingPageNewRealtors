@@ -11,6 +11,9 @@
 // - VITE_EMAILJS_TEMPLATE_ID  
 // - VITE_EMAILJS_PUBLIC_KEY
 
+// Shared configuration - recipient email for all form submissions
+export const RECIPIENT_EMAIL = import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com';
+
 export const EMAILJS_CONFIG = {
   // Replace with your EmailJS service ID (found in EmailJS dashboard)
   SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_brickell',
@@ -19,7 +22,7 @@ export const EMAILJS_CONFIG = {
   // Replace with your EmailJS public key (Account > API Keys)
   PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_EMAILJS_PUBLIC_KEY',
   // Recipient email for form submissions
-  TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
+  TO_EMAIL: RECIPIENT_EMAIL
 };
 
 // Web3Forms Configuration (Alternative to EmailJS)
@@ -34,7 +37,7 @@ export const WEB3FORMS_CONFIG = {
   // Access key from Web3Forms dashboard (safe for frontend use)
   ACCESS_KEY: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '',
   // Recipient email for form submissions
-  TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
+  TO_EMAIL: RECIPIENT_EMAIL
 };
 
 // Generate HTML email template with Brickell Realty Group branding

@@ -118,13 +118,17 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
           body: web3FormData
         });
 
-        const result = await response.json();
-        
-        if (result.success) {
-          console.log('Email sent successfully via Web3Forms');
-          return true;
+        if (!response.ok) {
+          console.warn('Web3Forms HTTP error:', response.status, response.statusText);
+        } else {
+          const result = await response.json();
+          
+          if (result.success) {
+            console.log('Email sent successfully via Web3Forms');
+            return true;
+          }
+          console.warn('Web3Forms error:', result.message);
         }
-        console.warn('Web3Forms error:', result.message);
       } catch (web3Error) {
         console.warn('Web3Forms error:', web3Error);
       }
