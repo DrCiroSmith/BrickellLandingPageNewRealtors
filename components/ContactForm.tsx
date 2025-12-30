@@ -34,7 +34,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    age: '',
     email: '',
     phone: '',
     license: '',
@@ -98,7 +97,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       // Generate HTML email content
       const htmlContent = generateEmailHTML({
         name: sanitizedData.name,
-        age: sanitizedData.age,
         email: sanitizedData.email,
         phone: sanitizedData.phone,
         license: sanitizedData.license,
@@ -119,7 +117,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         html_content: htmlContent,
         // Individual fields for flexible template design
         applicant_name: sanitizedData.name,
-        applicant_age: sanitizedData.age,
         applicant_email: sanitizedData.email,
         applicant_phone: sanitizedData.phone,
         applicant_license: sanitizedData.license,
@@ -163,7 +160,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     // Security: Sanitize all user inputs before processing
     const sanitizedData = {
       name: sanitizeInput(formData.name),
-      age: sanitizeInput(formData.age),
       email: sanitizeInput(formData.email),
       phone: sanitizeInput(formData.phone),
       license: sanitizeInput(formData.license),
@@ -213,7 +209,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         .insert([
           {
             full_name: sanitizedData.name,
-            age: sanitizedData.age ? parseInt(sanitizedData.age) : null,
             email: sanitizedData.email,
             phone: sanitizedData.phone,
             license_status: sanitizedData.license,
@@ -240,7 +235,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 Nueva solicitud de reclutamiento:
 
 Nombre: ${sanitizedData.name}
-Edad: ${sanitizedData.age}
 Email: ${sanitizedData.email}
 Teléfono: ${sanitizedData.phone}
 Licencia: ${sanitizedData.license}
@@ -263,7 +257,6 @@ Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
       const subject = `Nueva Solicitud: ${sanitizedData.name}`;
       const body = `
 Nombre: ${sanitizedData.name}
-Edad: ${sanitizedData.age}
 Email: ${sanitizedData.email}
 Teléfono: ${sanitizedData.phone}
 Licencia: ${sanitizedData.license}
@@ -312,39 +305,21 @@ Idiomas: ${languagesStr}
             
             <form className="space-y-6" onSubmit={handleSubmit}>
               
-              {/* Name and Age Row */}
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-4">
-                <div className="group sm:col-span-3">
-                  <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="name">
-                    Nombre completo
-                  </label>
-                  <input 
-                    required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                    id="name" 
-                    name="name" 
-                    placeholder="Tu nombre" 
-                    type="text" 
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="group sm:col-span-1">
-                  <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="age">
-                    Edad
-                  </label>
-                  <input 
-                    required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                    id="age" 
-                    name="age" 
-                    placeholder="25" 
-                    type="number" 
-                    min="18"
-                    value={formData.age}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              {/* Name Row */}
+              <div className="group">
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="name">
+                  Nombre completo
+                </label>
+                <input 
+                  required
+                  className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
+                  id="name" 
+                  name="name" 
+                  placeholder="Tu nombre" 
+                  type="text" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
               </div>
               
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -423,9 +398,7 @@ Idiomas: ${languagesStr}
 
               {/* Dynamic Languages Section - Removed pt-2, increased input height */}
               <div className="group">
-                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
-                  Idiomas
-                </label>
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors">Idiomas</label>
                 <div className="space-y-3">
                   {languages.map((lang) => (
                     <div key={lang.id} className="flex gap-4 items-end animate-in fade-in slide-in-from-top-1">

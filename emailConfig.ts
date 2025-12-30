@@ -25,7 +25,6 @@ export const EMAILJS_CONFIG = {
 // Generate HTML email template with Brickell Realty Group branding
 export const generateEmailHTML = (data: {
   name: string;
-  age: string;
   email: string;
   phone: string;
   license: string;
@@ -34,7 +33,7 @@ export const generateEmailHTML = (data: {
   languages: string;
   resumeUrl: string;
 }): string => {
-  const goldColor = '#d4af37';
+  const goldColor = '#b08d55';
   const darkBg = '#111111';
   const surfaceDark = '#1a1a1a';
   
@@ -82,12 +81,6 @@ export const generateEmailHTML = (data: {
                   <td style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                     <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Nombre Completo</span>
                     <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">${data.name}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Edad</span>
-                    <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">${data.age} años</p>
                   </td>
                 </tr>
                 <tr>
