@@ -38,9 +38,10 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     phone: '',
     license: '',
     experience: '',
-    appointmentDate: ''
+    appointmentDate: '',
+    message: ''
   });
-  
+
   // Dynamic languages state
   const [languages, setLanguages] = useState<LanguageSkill[]>([
     { id: Date.now(), language: '', proficiency: '' }
@@ -48,7 +49,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
   const [file, setFile] = useState<File | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -89,8 +90,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
   // Send email notification using EmailJS
   const sendEmailNotification = async (
-    sanitizedData: typeof formData, 
-    resumeUrl: string, 
+    sanitizedData: typeof formData,
+    resumeUrl: string,
     languagesStr: string
   ) => {
     try {
@@ -103,12 +104,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         experience: sanitizedData.experience,
         appointmentDate: sanitizedData.appointmentDate,
         languages: languagesStr,
-        resumeUrl: resumeUrl
+        resumeUrl: resumeUrl,
+        message: sanitizedData.message
       });
 
       // Send email using EmailJS
-      // Note: Template should use these variables. Some may appear redundant 
-      // to support various EmailJS template configurations.
       const templateParams = {
         to_email: EMAILJS_CONFIG.TO_EMAIL,
         from_name: sanitizedData.name,
@@ -123,6 +123,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         applicant_experience: sanitizedData.experience,
         applicant_languages: languagesStr,
         applicant_appointment: sanitizedData.appointmentDate,
+        applicant_message: sanitizedData.message,
         resume_url: resumeUrl || 'No se adjuntó archivo'
       };
 
@@ -143,13 +144,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Security: Validate email format
     if (!isValidEmail(formData.email)) {
       alert("Por favor, introduce un email válido.");
       return;
     }
-    
+
     if (!validatePhone(formData.phone)) {
       alert("Por favor, introduce un número de teléfono válido.");
       return;
@@ -164,7 +165,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       phone: sanitizeInput(formData.phone),
       license: sanitizeInput(formData.license),
       experience: sanitizeInput(formData.experience),
-      appointmentDate: sanitizeInput(formData.appointmentDate)
+      appointmentDate: sanitizeInput(formData.appointmentDate),
+      message: sanitizeInput(formData.message)
     };
 
     const languagesStr = languages
@@ -174,7 +176,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
     try {
       let resumeUrl = '';
-      
+
       // 1. Upload File (Attempt)
       if (file) {
         try {
@@ -227,7 +229,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
 
       // 3. Send email notification (always attempt, regardless of Supabase success)
       const emailSent = await sendEmailNotification(sanitizedData, resumeUrl, languagesStr);
-      
+
       if (!emailSent) {
         // Fallback to mailto if EmailJS fails (using sanitized data)
         const subject = `Nueva Solicitud de Agente: ${sanitizedData.name}`;
@@ -241,10 +243,11 @@ Licencia: ${sanitizedData.license}
 Experiencia: ${sanitizedData.experience}
 Fecha Cita: ${sanitizedData.appointmentDate}
 Idiomas: ${languagesStr}
+Mensaje: ${sanitizedData.message}
 
 Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
         `.trim();
-        
+
         window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
       }
 
@@ -252,7 +255,7 @@ Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
 
     } catch (error) {
       console.error('Form submission error:', error);
-      
+
       // Final fallback: Open mailto (using sanitized data)
       const subject = `Nueva Solicitud: ${sanitizedData.name}`;
       const body = `
@@ -263,12 +266,13 @@ Licencia: ${sanitizedData.license}
 Experiencia: ${sanitizedData.experience}
 Fecha Cita: ${sanitizedData.appointmentDate}
 Idiomas: ${languagesStr}
+Mensaje: ${sanitizedData.message}
 
 (Nota: El envío automático falló. Por favor, complete el envío manualmente).
       `.trim();
-      
+
       window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-      
+
       onSuccess();
     } finally {
       setIsSubmitting(false);
@@ -298,42 +302,42 @@ Idiomas: ${languagesStr}
               </div>
             </div>
           </div>
-          
+
           <div className="bg-background-dark p-8 md:p-12 border border-white/5 shadow-2xl relative">
             <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 rounded-bl-full"></div>
             <h3 className="mb-8 text-2xl text-white font-serif">Solicitud de Cita</h3>
-            
+
             <form className="space-y-6" onSubmit={handleSubmit}>
-              
+
               {/* Name Row */}
               <div className="group">
                 <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="name">
                   Nombre completo
                 </label>
-                <input 
+                <input
                   required
-                  className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                  id="name" 
-                  name="name" 
-                  placeholder="Tu nombre" 
-                  type="text" 
+                  className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none"
+                  id="name"
+                  name="name"
+                  placeholder="Tu nombre"
+                  type="text"
                   value={formData.name}
                   onChange={handleInputChange}
                 />
               </div>
-              
+
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <div className="group">
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="email">
                     Email
                   </label>
-                  <input 
+                  <input
                     required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                    id="email" 
-                    name="email" 
-                    placeholder="email@ejemplo.com" 
-                    type="email" 
+                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none"
+                    id="email"
+                    name="email"
+                    placeholder="email@ejemplo.com"
+                    type="email"
                     value={formData.email}
                     onChange={handleInputChange}
                   />
@@ -342,29 +346,28 @@ Idiomas: ${languagesStr}
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="phone">
                     Teléfono
                   </label>
-                  <input 
+                  <input
                     required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                    id="phone" 
-                    name="phone" 
-                    placeholder="+1 (555) 000-0000" 
-                    type="tel" 
+                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none"
+                    id="phone"
+                    name="phone"
+                    placeholder="+1 (555) 000-0000"
+                    type="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
                   />
                 </div>
               </div>
-              
-              {/* Removed pt-2 to keep consistent vertical rhythm with space-y-6 */}
+
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                 <div className="group">
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="license">
                     Licencia de Realtor
                   </label>
-                  <select 
+                  <select
                     required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none" 
-                    id="license" 
+                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none"
+                    id="license"
                     name="license"
                     value={formData.license}
                     onChange={handleInputChange}
@@ -379,10 +382,10 @@ Idiomas: ${languagesStr}
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="experience">
                     Experiencia
                   </label>
-                  <select 
+                  <select
                     required
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none" 
-                    id="experience" 
+                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none"
+                    id="experience"
                     name="experience"
                     value={formData.experience}
                     onChange={handleInputChange}
@@ -396,27 +399,27 @@ Idiomas: ${languagesStr}
                 </div>
               </div>
 
-              {/* Dynamic Languages Section - Removed pt-2, increased input height */}
+              {/* Dynamic Languages Section */}
               <div className="group">
                 <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors">Idiomas</label>
                 <div className="space-y-3">
                   {languages.map((lang) => (
                     <div key={lang.id} className="flex gap-4 items-end animate-in fade-in slide-in-from-top-1">
                       <div className="group flex-grow">
-                        <input 
+                        <input
                           required
-                          className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none" 
-                          placeholder="Ej. Español" 
-                          type="text" 
+                          className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none"
+                          placeholder="Ej. Español"
+                          type="text"
                           value={lang.language}
                           onChange={(e) => updateLanguage(lang.id, 'language', e.target.value)}
                         />
                       </div>
                       <div className="group w-1/3">
                         <label className="block text-[10px] uppercase tracking-widest text-gray-600 mb-1">Nivel</label>
-                        <select 
+                        <select
                           required
-                          className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none" 
+                          className="block w-full border-b border-gray-700 bg-transparent py-3 text-white focus:border-primary focus:ring-0 sm:text-sm appearance-none cursor-pointer focus:outline-none"
                           value={lang.proficiency}
                           onChange={(e) => updateLanguage(lang.id, 'proficiency', e.target.value)}
                         >
@@ -429,8 +432,8 @@ Idiomas: ${languagesStr}
                       </div>
                       <div className="pb-3">
                         {languages.length > 1 && (
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             onClick={() => removeLanguage(lang.id)}
                             className="text-gray-500 hover:text-red-500 transition-colors"
                             title="Eliminar idioma"
@@ -442,8 +445,8 @@ Idiomas: ${languagesStr}
                     </div>
                   ))}
                 </div>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={addLanguage}
                   className="mt-4 text-xs font-bold uppercase tracking-widest text-primary hover:text-white transition-colors flex items-center gap-1"
                 >
@@ -451,27 +454,43 @@ Idiomas: ${languagesStr}
                 </button>
               </div>
 
-               {/* Appointment Date Section - Improved styling */}
+              {/* Appointment Date Section */}
               <div className="group">
                 <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="appointmentDate">
                   Fecha de Cita (A partir del 6 de Enero)
                 </label>
                 <div className="relative">
-                  <input 
+                  <input
                     required
                     style={{ colorScheme: 'dark' }}
-                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:hover:opacity-100" 
-                    id="appointmentDate" 
-                    name="appointmentDate" 
-                    type="date" 
+                    className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-gray-500 focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none cursor-pointer [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:hover:opacity-100"
+                    id="appointmentDate"
+                    name="appointmentDate"
+                    type="date"
                     min="2025-01-06"
                     value={formData.appointmentDate}
                     onChange={handleInputChange}
                   />
                 </div>
               </div>
-              
-              {/* CV Section - Removed pt-4 to consistent space-y-6 */}
+
+              {/* Message Section */}
+              <div className="group">
+                <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2 group-focus-within:text-primary transition-colors" htmlFor="message">
+                  Mensaje Adicional
+                </label>
+                <textarea
+                  className="block w-full border-b border-gray-700 bg-transparent py-3 text-white placeholder-transparent focus:border-primary focus:ring-0 sm:text-lg transition-colors focus:outline-none resize-none"
+                  id="message"
+                  name="message"
+                  rows={3}
+                  placeholder="Mensaje adicional..."
+                  value={formData.message}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* CV Section */}
               <div className="group">
                 <label className="block text-xs uppercase tracking-widest text-gray-500 mb-3">CV / Resumen Profesional (Max 25MB)</label>
                 <div className="flex items-center justify-center w-full">
@@ -486,12 +505,13 @@ Idiomas: ${languagesStr}
                   </label>
                 </div>
               </div>
-              
+
               <div className="pt-6">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-white text-black py-4 px-8 text-sm font-bold uppercase tracking-widest hover:bg-primary disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors duration-300"
+                  style={{ backgroundColor: '#A5823F' }}
+                  className="w-full text-black py-4 px-8 text-sm font-bold uppercase tracking-widest hover:bg-white disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors duration-300"
                 >
                   {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}
                 </button>

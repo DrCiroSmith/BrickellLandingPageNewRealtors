@@ -32,11 +32,12 @@ export const generateEmailHTML = (data: {
   appointmentDate: string;
   languages: string;
   resumeUrl: string;
+  message?: string;
 }): string => {
   const goldColor = '#A5823F';
   const darkBg = '#111111';
   const surfaceDark = '#1a1a1a';
-  
+
   return `
 <!DOCTYPE html>
 <html lang="es">
@@ -63,7 +64,7 @@ export const generateEmailHTML = (data: {
                 NUEVA SOLICITUD DE AGENTE
               </h1>
               <p style="color: ${goldColor}; font-size: 12px; margin: 0; letter-spacing: 3px; text-transform: uppercase;">
-                Recruitment Portal
+                Brickell Realty Group
               </p>
             </td>
           </tr>
@@ -71,15 +72,12 @@ export const generateEmailHTML = (data: {
           <!-- Content -->
           <tr>
             <td style="padding: 40px;">
-              <p style="color: #9ca3af; font-size: 14px; margin: 0 0 30px 0; line-height: 1.6;">
-                Se ha recibido una nueva solicitud de reclutamiento a través del portal web. A continuación se detallan los datos del aplicante:
-              </p>
               
               <!-- Data Table -->
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: ${surfaceDark}; border-radius: 4px; overflow: hidden;">
                 <tr>
                   <td style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Nombre Completo</span>
+                    <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Nombre</span>
                     <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">${data.name}</p>
                   </td>
                 </tr>
@@ -113,6 +111,12 @@ export const generateEmailHTML = (data: {
                 </tr>
                 <tr>
                   <td style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Mensaje Adicional</span>
+                    <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">${data.message || 'Sin mensaje'}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                     <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Idiomas</span>
                     <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">${data.languages || 'No especificado'}</p>
                   </td>
@@ -127,24 +131,21 @@ export const generateEmailHTML = (data: {
                   <td style="padding: 15px 20px;">
                     <span style="color: ${goldColor}; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">CV / Resume</span>
                     <p style="color: #ffffff; font-size: 16px; margin: 5px 0 0 0; font-weight: 500;">
-                      ${data.resumeUrl && !data.resumeUrl.includes('Error') 
-                        ? `<a href="${data.resumeUrl}" style="color: ${goldColor}; text-decoration: none; display: inline-flex; align-items: center;">
+                      ${data.resumeUrl && !data.resumeUrl.includes('Error')
+      ? `<a href="${data.resumeUrl}" style="color: ${goldColor}; text-decoration: none; display: inline-flex; align-items: center;">
                             📄 Ver/Descargar PDF
-                          </a>` 
-                        : '<span style="color: #9ca3af;">No se adjuntó archivo</span>'
-                      }
+                          </a>`
+      : '<span style="color: #9ca3af;">No se adjuntó archivo</span>'
+    }
                     </p>
                   </td>
                 </tr>
               </table>
               
-              <!-- Action Note -->
-              <div style="margin-top: 30px; padding: 20px; background-color: rgba(212, 175, 55, 0.1); border-left: 3px solid ${goldColor}; border-radius: 0 4px 4px 0;">
-                <p style="color: #9ca3af; font-size: 13px; margin: 0; line-height: 1.5;">
-                  <strong style="color: ${goldColor};">Próximos pasos:</strong><br>
-                  Revise el perfil del candidato y contacte para confirmar la cita en la fecha solicitada.
-                </p>
+              <div style="text-align: center; margin-top: 30px;">
+                 <a href="https://brickell-realty.com/admin" style="background-color: ${goldColor}; color: #000000; padding: 12px 24px; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; display: inline-block;">Ver Más Solicitudes</a>
               </div>
+
             </td>
           </tr>
           
@@ -152,10 +153,10 @@ export const generateEmailHTML = (data: {
           <tr>
             <td style="background-color: ${surfaceDark}; padding: 25px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
               <p style="color: #6b7280; font-size: 11px; margin: 0; letter-spacing: 1px;">
-                © ${new Date().getFullYear()} BRICKELL REALTY GROUP
+                © ${new Date().getFullYear()} Brickell Realty Group. Todos los derechos reservados.
               </p>
               <p style="color: #4b5563; font-size: 10px; margin: 10px 0 0 0;">
-                Exclusive · Luxurious · Unique
+                Miami, Florida | reception@brickell-realty.com
               </p>
             </td>
           </tr>
