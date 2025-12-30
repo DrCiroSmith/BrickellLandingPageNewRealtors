@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { EMAILJS_CONFIG } from '../emailConfig';
 
 interface LanguageSkill {
   id: number;
@@ -159,9 +158,9 @@ const ContactForm: React.FC = () => {
             license_status: sanitizedData.license,
             experience_years: sanitizedData.experience,
             appointment_date: sanitizedData.appointmentDate,
+            message: sanitizedData.message,
             resume_url: resumeUrl,
             languages: languagesStr,
-            language_proficiency: 'See languages column',
             created_at: new Date().toISOString()
           }
         ])
@@ -169,44 +168,29 @@ const ContactForm: React.FC = () => {
         .single();
 
       if (insertError) {
-        console.warn('Supabase insert error:', insertError);
+        console.error('Supabase insert error:', insertError);
         throw insertError;
       }
 
-      // 3. Call Edge Function to send email
+      // 3. Call Edge Function to send email (include all fields)
       const { error: functionError } = await supabase.functions.invoke('send-resume-email', {
         body: {
-          id: insertData.id,
+          id: insertData?.id,
           full_name: sanitizedData.name,
           email: sanitizedData.email,
           phone: sanitizedData.phone,
           license_status: sanitizedData.license,
           experience_years: sanitizedData.experience,
           resume_url: resumeUrl,
-          languages: languagesStr
+          languages: languagesStr,
+          appointment_date: sanitizedData.appointmentDate,
+          message: sanitizedData.message
         }
       });
 
       if (functionError) {
-        console.warn('Edge Function error:', functionError);
-        // Fallback to mailto if Edge Function fails
-        const subject = `Nueva Solicitud de Agente: ${sanitizedData.name}`;
-        const body = `
-Nueva solicitud de reclutamiento:
-
-Nombre: ${sanitizedData.name}
-Email: ${sanitizedData.email}
-Teléfono: ${sanitizedData.phone}
-Licencia: ${sanitizedData.license}
-Experiencia: ${sanitizedData.experience}
-Fecha Cita: ${sanitizedData.appointmentDate}
-Idiomas: ${languagesStr}
-Mensaje: ${sanitizedData.message}
-
-Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
-        `.trim();
-
-        window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+        console.warn('Edge Function error (email may not have been sent):', functionError);
+        // No mailto fallback - just log the error and continue to thank you page
       }
 
       navigate('/thank-you');
@@ -214,26 +198,8 @@ Enlace al CV: ${resumeUrl || 'No se adjuntó archivo'}
 
     } catch (error) {
       console.error('Form submission error:', error);
-
-      // Final fallback: Open mailto (using sanitized data)
-      const subject = `Nueva Solicitud: ${sanitizedData.name}`;
-      const body = `
-Nombre: ${sanitizedData.name}
-Email: ${sanitizedData.email}
-Teléfono: ${sanitizedData.phone}
-Licencia: ${sanitizedData.license}
-Experiencia: ${sanitizedData.experience}
-Fecha Cita: ${sanitizedData.appointmentDate}
-Idiomas: ${languagesStr}
-Mensaje: ${sanitizedData.message}
-
-(Nota: El envío automático falló. Por favor, complete el envío manualmente).
-      `.trim();
-
-      window.open(`mailto:${EMAILJS_CONFIG.TO_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-
-      navigate('/thank-you');
-      window.scrollTo(0, 0);
+      // Show error to user
+      alert('Hubo un problema al enviar tu solicitud. Por favor, intenta de nuevo o contacta directamente.');
     } finally {
       setIsSubmitting(false);
     }
