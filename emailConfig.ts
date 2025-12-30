@@ -22,6 +22,21 @@ export const EMAILJS_CONFIG = {
   TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
 };
 
+// Web3Forms Configuration (Alternative to EmailJS)
+// =================================================
+// Web3Forms is a free form-to-email service (250 emails/month on free tier)
+// 1. Go to https://web3forms.com/ and create a free access key
+// 2. Set the access key in the environment variable VITE_WEB3FORMS_ACCESS_KEY
+// 3. The access key is safe to use in the browser (designed for frontend use)
+export const WEB3FORMS_CONFIG = {
+  // Web3Forms API endpoint
+  API_URL: 'https://api.web3forms.com/submit',
+  // Access key from Web3Forms dashboard (safe for frontend use)
+  ACCESS_KEY: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '',
+  // Recipient email for form submissions
+  TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
+};
+
 // Generate HTML email template with Brickell Realty Group branding
 export const generateEmailHTML = (data: {
   name: string;
