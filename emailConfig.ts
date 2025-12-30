@@ -54,18 +54,14 @@ export const generateEmailHTML = (data: {
           
           <!-- Header -->
           <tr>
-            <td style="background-color: ${surfaceDark}; padding: 30px 40px; text-align: center; border-bottom: 2px solid ${goldColor};">
+            <td style="background-color: #1a1a1a; padding: 30px; text-align: center; border-bottom: 2px solid #A5823F;">
               <img 
                 src="https://idxboost-single-property.s3.amazonaws.com/ad6f19fee807c6048e328d33bf4cd2e5/58726008becf56de4a8cfb855869cbac.png" 
-                alt="Brickell Realty Group" 
-                style="height: 60px; width: auto;"
+                alt="Brickell Realty Group Logo" 
+                style="max-width: 200px; height: auto; margin-bottom: 15px;"
               />
-              <h1 style="color: #ffffff; font-size: 24px; margin: 20px 0 5px 0; font-weight: 300; letter-spacing: 2px;">
-                NUEVA SOLICITUD DE AGENTE
-              </h1>
-              <p style="color: ${goldColor}; font-size: 12px; margin: 0; letter-spacing: 3px; text-transform: uppercase;">
-                Brickell Realty Group
-              </p>
+              <h1 style="color: white; margin: 0; font-size: 24px;">Nueva Solicitud de Agente</h1>
+              <p style="color: #A5823F; margin: 10px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Brickell Realty Group</p>
             </td>
           </tr>
           

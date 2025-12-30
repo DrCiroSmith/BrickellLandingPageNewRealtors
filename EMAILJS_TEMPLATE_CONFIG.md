@@ -79,6 +79,7 @@ Nueva Solicitud de Agente: {{applicant_name}}
     
     <!-- Header -->
     <div style="background: #1a1a1a; padding: 30px; text-align: center; border-bottom: 2px solid #d4af37;">
+      <img src="https://idxboost-single-property.s3.amazonaws.com/ad6f19fee807c6048e328d33bf4cd2e5/58726008becf56de4a8cfb855869cbac.png" alt="Brickell Realty Group Logo" style="max-width: 200px; height: auto; margin-bottom: 15px;">
       <h1 style="color: white; margin: 0; font-size: 24px;">Nueva Solicitud de Agente</h1>
       <p style="color: #d4af37; margin: 10px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">Brickell Realty Group</p>
     </div>
