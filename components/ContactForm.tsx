@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { supabase } from '../supabaseClient';
-import { EMAILJS_CONFIG, generateEmailHTML } from '../emailConfig';
+import { EMAILJS_CONFIG } from '../emailConfig';
 
 interface ContactFormProps {
   onSuccess: () => void;
@@ -88,60 +87,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 7;
   };
 
-  // Send email notification using EmailJS
-  const sendEmailNotification = async (
-    sanitizedData: typeof formData,
-    resumeUrl: string,
-    languagesStr: string
-  ) => {
-    try {
-      // Generate HTML email content
-      const htmlContent = generateEmailHTML({
-        name: sanitizedData.name,
-        email: sanitizedData.email,
-        phone: sanitizedData.phone,
-        license: sanitizedData.license,
-        experience: sanitizedData.experience,
-        appointmentDate: sanitizedData.appointmentDate,
-        languages: languagesStr,
-        resumeUrl: resumeUrl,
-        message: sanitizedData.message
-      });
-
-      // Send email using EmailJS
-      const templateParams = {
-        to_email: EMAILJS_CONFIG.TO_EMAIL,
-        from_name: sanitizedData.name,
-        from_email: sanitizedData.email,
-        subject: `Nueva Solicitud de Agente: ${sanitizedData.name}`,
-        html_content: htmlContent,
-        // Individual fields for flexible template design
-        applicant_name: sanitizedData.name,
-        applicant_email: sanitizedData.email,
-        applicant_phone: sanitizedData.phone,
-        applicant_license: sanitizedData.license,
-        applicant_experience: sanitizedData.experience,
-        applicant_languages: languagesStr,
-        applicant_appointment: sanitizedData.appointmentDate,
-        applicant_message: sanitizedData.message,
-        resume_url: resumeUrl || 'No se adjuntó archivo'
-      };
-
-      await emailjs.send(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
-        templateParams,
-        EMAILJS_CONFIG.PUBLIC_KEY
-      );
-
-      console.log('Email sent successfully');
-      return true;
-    } catch (emailError) {
-      console.warn('EmailJS error:', emailError);
-      return false;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -206,7 +151,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       }
 
       // 2. Insert Data to Supabase (using sanitized data)
-      const { error: insertError } = await supabase
+      const { data: insertData, error: insertError } = await supabase
         .from('applicants')
         .insert([
           {
@@ -221,17 +166,32 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
             language_proficiency: 'See languages column',
             created_at: new Date().toISOString()
           }
-        ]);
+        ])
+        .select()
+        .single();
 
       if (insertError) {
         console.warn('Supabase insert error:', insertError);
+        throw insertError;
       }
 
-      // 3. Send email notification (always attempt, regardless of Supabase success)
-      const emailSent = await sendEmailNotification(sanitizedData, resumeUrl, languagesStr);
+      // 3. Call Edge Function to send email
+      const { error: functionError } = await supabase.functions.invoke('send-resume-email', {
+        body: {
+          id: insertData.id,
+          full_name: sanitizedData.name,
+          email: sanitizedData.email,
+          phone: sanitizedData.phone,
+          license_status: sanitizedData.license,
+          experience_years: sanitizedData.experience,
+          resume_url: resumeUrl,
+          languages: languagesStr
+        }
+      });
 
-      if (!emailSent) {
-        // Fallback to mailto if EmailJS fails (using sanitized data)
+      if (functionError) {
+        console.warn('Edge Function error:', functionError);
+        // Fallback to mailto if Edge Function fails
         const subject = `Nueva Solicitud de Agente: ${sanitizedData.name}`;
         const body = `
 Nueva solicitud de reclutamiento:
