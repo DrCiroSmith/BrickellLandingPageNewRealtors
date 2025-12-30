@@ -10,9 +10,6 @@
     <!-- Security: Referrer Policy -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,79 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-
-    <!-- Tailwind Configuration -->
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#d4af37",
-              "primary-hover": "#b5952f",
-              "secondary": "#0f172a",
-              "accent-red": "#ef4444",
-              "background-light": "#ffffff",
-              "background-dark": "#111111",
-              "surface-dark": "#1a1a1a",
-              "surface-darker": "#000000",
-            },
-            fontFamily: {
-              "display": ["Manrope", "sans-serif"],
-              "serif": ["Playfair Display", "serif"],
-              "lato": ["Lato", "sans-serif"],
-            },
-            borderRadius: {
-              "DEFAULT": "0px",
-              "lg": "2px",
-              "xl": "4px",
-              "full": "9999px"
-            },
-          },
-        },
-      }
-    </script>
-
-    <!-- Custom CSS for specialized animations that Tailwind arbitrary values handle poorly -->
-    <style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      h1, h2, h3 {
-        font-family: 'Playfair Display', serif;
-      }
-      .text-gold-gradient {
-        background: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        background-size: 200% auto;
-        animation: shine 5s linear infinite;
-      }
-      @keyframes shine {
-        to {
-          background-position: 200% center;
-        }
-      }
-      @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-fade-in-up {
-        animation: fadeIn 1.2s ease-in-out forwards;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2",
-    "@emailjs/browser": "https://esm.sh/@emailjs/browser@4.4.1"
-  }
-}
-</script>
 </head>
   <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-gray-200 overflow-x-hidden antialiased selection:bg-primary selection:text-white">
     <div id="root"></div>
