@@ -14,7 +14,7 @@ h1, h2, h3 {
 
 /* Gold gradient text effect */
 .text-gold-gradient {
-  background: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+  background: linear-gradient(to right, #b08d55, #d4c4a1, #b08d55);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

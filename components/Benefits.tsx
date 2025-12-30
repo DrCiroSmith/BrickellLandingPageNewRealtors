@@ -24,7 +24,7 @@ const Benefits: React.FC = () => {
             </div>
             <h3 className="mb-4 text-2xl text-white font-medium">Tecnología Superior</h3>
             <p className="text-sm leading-relaxed text-gray-400 font-light">
-              Plataformas CRM propietarias y análisis de mercado en tiempo real para mantenerte siempre adelante de la competencia.
+              Plataformas CRM y análisis de mercado en tiempo real para mantenerte siempre adelante de la competencia.
             </p>
           </div>
           

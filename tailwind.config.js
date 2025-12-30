@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        "primary": "#d4af37",
-        "primary-hover": "#b5952f",
+        "primary": "#b08d55",
+        "primary-hover": "#947543",
         "secondary": "#0f172a",
         "accent-red": "#ef4444",
         "background-light": "#ffffff",
