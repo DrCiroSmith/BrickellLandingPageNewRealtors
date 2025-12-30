@@ -33,7 +33,7 @@ export const generateEmailHTML = (data: {
   languages: string;
   resumeUrl: string;
 }): string => {
-  const goldColor = '#b08d55';
+  const goldColor = '#A5823F';
   const darkBg = '#111111';
   const surfaceDark = '#1a1a1a';
   
