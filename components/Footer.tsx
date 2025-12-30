@@ -9,12 +9,6 @@ const Footer: React.FC = () => {
           <p className="text-xs uppercase tracking-widest text-gray-500">© {new Date().getFullYear()} Brickell Realty Group.</p>
         </div>
         <div className="flex flex-wrap gap-8 justify-center">
-          <a href="#" className="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors">
-            Privacidad
-          </a>
-          <a href="#" className="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-primary transition-colors">
-            Términos
-          </a>
           <a 
             href="https://www.instagram.com/brickell.realty.group/" 
             target="_blank" 

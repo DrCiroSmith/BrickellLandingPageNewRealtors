@@ -79,9 +79,24 @@ BrickellLandingPageNewRealtors/
 └── package.json              # Dependencies
 ```
 
-## 📧 Email Configuration (EmailJS)
+## 📧 Email Configuration
 
-To enable email notifications when applicants submit the form:
+The application supports two email services for form submission notifications. **Web3Forms is recommended** as the primary service.
+
+### Option 1: Web3Forms (Recommended)
+
+Web3Forms is a free form-to-email service (250 emails/month on free tier) that works directly from the browser.
+
+1. Go to [Web3Forms](https://web3forms.com/) and create a free access key
+2. Configure your `.env.local`:
+   ```env
+   VITE_WEB3FORMS_ACCESS_KEY=your_access_key_here
+   VITE_RECIPIENT_EMAIL=your_email@example.com
+   ```
+
+### Option 2: EmailJS (Fallback)
+
+To use EmailJS for email notifications:
 
 1. Create a free account at [EmailJS](https://www.emailjs.com/)
 2. Add an email service (Gmail, Outlook, etc.)
@@ -101,6 +116,8 @@ To enable email notifications when applicants submit the form:
    VITE_RECIPIENT_EMAIL=your_email@example.com
    ```
 
+**Note:** If Web3Forms is configured, it will be used as the primary email service. EmailJS will be used as a fallback.
+
 ## 🚀 Deployment to GitHub Pages
 
 ### Automatic Deployment
@@ -113,9 +130,10 @@ Add these secrets in your repository settings (Settings → Secrets and variable
 
 | Secret Name | Description |
 |-------------|-------------|
-| `VITE_EMAILJS_SERVICE_ID` | Your EmailJS service ID |
-| `VITE_EMAILJS_TEMPLATE_ID` | Your EmailJS template ID |
-| `VITE_EMAILJS_PUBLIC_KEY` | Your EmailJS public key |
+| `VITE_WEB3FORMS_ACCESS_KEY` | Your Web3Forms access key (recommended) |
+| `VITE_EMAILJS_SERVICE_ID` | Your EmailJS service ID (fallback) |
+| `VITE_EMAILJS_TEMPLATE_ID` | Your EmailJS template ID (fallback) |
+| `VITE_EMAILJS_PUBLIC_KEY` | Your EmailJS public key (fallback) |
 | `VITE_RECIPIENT_EMAIL` | Email to receive form submissions |
 
 ### Enable GitHub Pages
@@ -146,7 +164,7 @@ The built files will be in the `dist/` directory.
 - **Styling**: Tailwind CSS
 - **Build Tool**: Vite
 - **Database**: Supabase
-- **Email**: EmailJS
+- **Email**: Web3Forms (primary), EmailJS (fallback)
 - **Deployment**: GitHub Actions, GitHub Pages
 
 ## 📋 Recent Improvements

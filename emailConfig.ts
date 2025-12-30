@@ -11,6 +11,9 @@
 // - VITE_EMAILJS_TEMPLATE_ID  
 // - VITE_EMAILJS_PUBLIC_KEY
 
+// Shared configuration - recipient email for all form submissions
+export const RECIPIENT_EMAIL = import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com';
+
 export const EMAILJS_CONFIG = {
   // Replace with your EmailJS service ID (found in EmailJS dashboard)
   SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_brickell',
@@ -19,7 +22,22 @@ export const EMAILJS_CONFIG = {
   // Replace with your EmailJS public key (Account > API Keys)
   PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_EMAILJS_PUBLIC_KEY',
   // Recipient email for form submissions
-  TO_EMAIL: import.meta.env.VITE_RECIPIENT_EMAIL || 'roisasha@gmail.com'
+  TO_EMAIL: RECIPIENT_EMAIL
+};
+
+// Web3Forms Configuration (Alternative to EmailJS)
+// =================================================
+// Web3Forms is a free form-to-email service (250 emails/month on free tier)
+// 1. Go to https://web3forms.com/ and create a free access key
+// 2. Set the access key in the environment variable VITE_WEB3FORMS_ACCESS_KEY
+// 3. The access key is safe to use in the browser (designed for frontend use)
+export const WEB3FORMS_CONFIG = {
+  // Web3Forms API endpoint
+  API_URL: 'https://api.web3forms.com/submit',
+  // Access key from Web3Forms dashboard (safe for frontend use)
+  ACCESS_KEY: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '',
+  // Recipient email for form submissions
+  TO_EMAIL: RECIPIENT_EMAIL
 };
 
 // Generate HTML email template with Brickell Realty Group branding

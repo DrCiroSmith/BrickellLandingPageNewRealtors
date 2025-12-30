@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { supabase } from '../supabaseClient';
-import { EMAILJS_CONFIG, generateEmailHTML } from '../emailConfig';
+import { EMAILJS_CONFIG, WEB3FORMS_CONFIG, generateEmailHTML } from '../emailConfig';
 
 interface ContactFormProps {
   onSuccess: () => void;
@@ -88,12 +88,53 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
     return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 7;
   };
 
-  // Send email notification using EmailJS
+  // Send email notification using Web3Forms (primary) or EmailJS (fallback)
   const sendEmailNotification = async (
     sanitizedData: typeof formData,
     resumeUrl: string,
     languagesStr: string
   ) => {
+    // Try Web3Forms first (more reliable free tier)
+    if (WEB3FORMS_CONFIG.ACCESS_KEY) {
+      try {
+        const web3FormData = new FormData();
+        web3FormData.append('access_key', WEB3FORMS_CONFIG.ACCESS_KEY);
+        web3FormData.append('subject', `Nueva Solicitud de Agente: ${sanitizedData.name}`);
+        web3FormData.append('from_name', 'Brickell Realty Group - Recruitment');
+        
+        // Add all form fields
+        web3FormData.append('Nombre', sanitizedData.name);
+        web3FormData.append('Email', sanitizedData.email);
+        web3FormData.append('Teléfono', sanitizedData.phone);
+        web3FormData.append('Licencia de Realtor', sanitizedData.license);
+        web3FormData.append('Experiencia', sanitizedData.experience);
+        web3FormData.append('Idiomas', languagesStr || 'No especificado');
+        web3FormData.append('Fecha de Cita', sanitizedData.appointmentDate);
+        web3FormData.append('Mensaje', sanitizedData.message || 'Sin mensaje');
+        web3FormData.append('CV/Resume URL', resumeUrl || 'No se adjuntó archivo');
+
+        const response = await fetch(WEB3FORMS_CONFIG.API_URL, {
+          method: 'POST',
+          body: web3FormData
+        });
+
+        if (!response.ok) {
+          console.warn('Web3Forms HTTP error:', response.status, response.statusText);
+        } else {
+          const result = await response.json();
+          
+          if (result.success) {
+            console.log('Email sent successfully via Web3Forms');
+            return true;
+          }
+          console.warn('Web3Forms error:', result.message);
+        }
+      } catch (web3Error) {
+        console.warn('Web3Forms error:', web3Error);
+      }
+    }
+
+    // Fallback to EmailJS
     try {
       // Generate HTML email content
       const htmlContent = generateEmailHTML({
@@ -134,7 +175,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
         EMAILJS_CONFIG.PUBLIC_KEY
       );
 
-      console.log('Email sent successfully');
+      console.log('Email sent successfully via EmailJS');
       return true;
     } catch (emailError) {
       console.warn('EmailJS error:', emailError);
