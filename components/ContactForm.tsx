@@ -194,10 +194,7 @@ const ContactForm: React.FC = () => {
       navigate('/thank-you');
       window.scrollTo(0, 0);
 
-    } catch (error) {
-      console.error('Form submission error:', error);
-      // Show error to user
-      alert('Hubo un problema al enviar tu solicitud. Por favor, intenta de nuevo o contacta directamente.');
+    } catch (error: any) { console.error('Form submission error:', error); const errorMsg = error?.message || JSON.stringify(error); alert(Error: );
     } finally {
       setIsSubmitting(false);
     }
