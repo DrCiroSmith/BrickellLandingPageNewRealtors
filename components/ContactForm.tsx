@@ -194,7 +194,10 @@ const ContactForm: React.FC = () => {
       navigate('/thank-you');
       window.scrollTo(0, 0);
 
-    } catch (error: any) { console.error('Form submission error:', error); const errorMsg = error?.message || JSON.stringify(error); alert(Error: );
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      const errorMsg = error?.message || JSON.stringify(error);
+      alert('Error: ' + errorMsg);
     } finally {
       setIsSubmitting(false);
     }
