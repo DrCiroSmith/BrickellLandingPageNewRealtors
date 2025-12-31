@@ -178,9 +178,7 @@ const ContactForm: React.FC = () => {
           phone: sanitizedData.phone,
           license_status: sanitizedData.license,
           experience_years: sanitizedData.experience,
-          appointment_date: sanitizedData.appointmentDate || null, message: sanitizedData.message || null, resume_url: resumeUrl, languages: languagesStr,
-          appointment_date: sanitizedData.appointmentDate,
-          message: sanitizedData.message
+          resume_url: resumeUrl, languages: languagesStr, appointment_date: sanitizedData.appointmentDate, message: sanitizedData.message
         }
       });
 
