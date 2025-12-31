@@ -196,8 +196,7 @@ const ContactForm: React.FC = () => {
 
     } catch (error: any) {
       console.error('Form submission error:', error);
-      const errorMsg = error?.message || JSON.stringify(error);
-      alert('Error: ' + errorMsg);
+      alert('Hubo un problema al enviar tu solicitud. Por favor, intenta de nuevo o contacta directamente.');
     } finally {
       setIsSubmitting(false);
     }
